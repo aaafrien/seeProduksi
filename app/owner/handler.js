@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const { Owner, Admin } = require("../../models");
-const jwt = require("jsonwebtoken");
 const generateAccessToken = require("../../utils/tokenManager");
 
 module.exports = {
@@ -87,6 +86,14 @@ module.exports = {
           },
         },
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  handlerAddProduk: async (req, res, next) => {
+    try {
+
     } catch (error) {
       next(error);
     }

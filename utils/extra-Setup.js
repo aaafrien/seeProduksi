@@ -1,45 +1,50 @@
 function applyExtraSetup(sequelize) {
-    const { Admin, Owner, Aksesoris, Kain, Kulit, Produk } = sequelize.models;
+  const { Admin, Owner, Bahan_Baku, Produk, Produk_Bahan } = sequelize.models;
 
-    Owner.hasMany(Admin, {
-        foreignKey: 'email_owner',
-        sourceKey: "email_owner",
-    });
+  Owner.hasMany(Admin, {
+    foreignKey: "email_owner",
+    sourceKey: "email_owner",
+  });
 
-    Admin.belongsTo(Owner, {
-        foreignKey: 'email_owner',
-        sourceKey: 'email_owner',
-    });
+  Admin.belongsTo(Owner, {
+    foreignKey: "email_owner",
+    sourceKey: "email_owner",
+  });
 
-    Aksesoris.hasMany(Produk, {
-        foreignKey: "kode_aksesoris",
-        sourceKey: "kode_aksesoris",
-    });
+  // Bahan_Baku.hasMany(Produk_Bahan, {
+  //   foreignKey: "kode_bahan",
+  //   sourceKey: "kode",
+  // });
+  
+  // Produk.hasMany(Produk_Bahan, {
+  //   foreignKey: "kode_produk",
+  //   sourceKey: "kode_produk",
+  // });
 
-    Kain.hasMany(Produk, {
-        foreignKey: "kode_kain",
-        sourceKey: "kode_kain",
-    });
+  // Produk.belongsToMany(Bahan_Baku, { through: Produk_Bahan});
+  // Bahan_Baku.belongsToMany(Produk, { through: Produk_Bahan});
 
-    Kulit.hasMany(Produk, {
-        foreignKey: "kode_kulit",
-        sourceKey: "kode_kulit",
-    });
+  // Produk_Bahan.belongsToMany(Produk, {
+  //   foreignKey: "kode_produk",
+  //   sourceKey: "kode_produk",
+  // });
 
-    Produk.belongsTo(Aksesoris, {
-        foreignKey: "kode_aksesoris",
-        sourceKey: "kode_aksesoris",
-    });
+  // Produk_Bahan.belongsTo(Bahan_Baku, {
+  //   foreignKey: "kode_bahan",
+  //   sourceKey: "kode",
+  // });
 
-    Produk.belongsTo(Kain, {
-        foreignKey: "kode_kain",
-        sourceKey: "kode_kain",
-    });
+  Produk.belongsToMany(Bahan_Baku, {
+    through: Produk_Bahan,
+    as: "Bahans",
+    foreignKey: "kode_produk"
+  });
 
-    Produk.belongsTo(Kulit, {
-        foreignKey: "kode_kulit",
-        sourceKey: "kode_kulit",
-    });
+  Bahan_Baku.belongsToMany(Produk, {
+    through: Produk_Bahan,
+    as: "Produks",
+    foreignKey: "kode_bahan"
+  })
 }
 
 module.exports = applyExtraSetup;
