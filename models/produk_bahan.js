@@ -2,6 +2,12 @@ function createModelProdukBahan(Sequelize, DataTypes) {
   const produkBahan = Sequelize.define(
     "Produk_Bahan",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       kode_produk: {
         type: DataTypes.STRING(10),
         allowNull: false,
@@ -39,7 +45,6 @@ function createModelProdukBahan(Sequelize, DataTypes) {
       tableName: "produk_bahan",
     }
   );
-  produkBahan.removeAttribute('id');
   return produkBahan;
 }
 

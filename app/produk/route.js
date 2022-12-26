@@ -1,7 +1,8 @@
 const express = require('express');
-const { handlerAddProduk, handlerGetAllProduk } = require('./handler');
+const { handlerAddProduk, handlerGetAllProduk, handlerDeleteProduk } = require('./handler');
 const router = express.Router();
 
-router.get('/:kode_produk', handlerGetAllProduk);
+router.get('/', handlerGetAllProduk);
 router.post("/", handlerAddProduk);
+router.delete("/:kode_produk", handlerDeleteProduk);
 module.exports = router;

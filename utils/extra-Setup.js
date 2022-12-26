@@ -36,15 +36,17 @@ function applyExtraSetup(sequelize) {
 
   Produk.belongsToMany(Bahan_Baku, {
     through: Produk_Bahan,
-    as: "Bahans",
+    as: "Bahan",
     foreignKey: "kode_produk"
   });
 
   Bahan_Baku.belongsToMany(Produk, {
     through: Produk_Bahan,
-    as: "Produks",
+    as: "Produk",
     foreignKey: "kode_bahan"
-  })
+  });
+
+  
 }
 
 module.exports = applyExtraSetup;
