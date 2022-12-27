@@ -1,6 +1,7 @@
 const { Produk, Produk_Bahan, Bahan_Baku, sequelize } = require("../../models");
 
 module.exports = {
+
   handlerAddProduk: async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
@@ -36,9 +37,7 @@ module.exports = {
         res.status(201).json({
           status: "Sucess",
           message: "Successfully add Produk",
-          data: 
-            { produk, bahan: dataBahan },
-          
+          data: { produk, bahan: dataBahan },
         });
       } else {
         throw new Error("Kode Produk has been used");
@@ -48,6 +47,7 @@ module.exports = {
       next(error);
     }
   },
+
   handlerGetAllProduk: async (req, res, next) => {
     try {
       const produk = await Produk.findAll({
@@ -55,10 +55,17 @@ module.exports = {
           {
             model: Bahan_Baku,
             as: "Bahan",
-            attributes: ["nama", "jenis", "kategori_bahan", "harga", "satuan"],
+            attributes: [
+              "kode",
+              "nama",
+              "jenis",
+              "kategori_bahan",
+              "harga",
+              "satuan",
+            ],
             through: {
               as: "Jumlah_bahan",
-              attributes: ["jumlah_bahan"],
+              attributes: ["id", "jumlah_bahan"],
             },
           },
         ],
@@ -69,85 +76,28 @@ module.exports = {
 
       const hasil = json.map((item) => {
         item.Bahan = item.Bahan.map((data) => {
-          
           return {
+            kode_bahan: data.kode,
             nama: data.nama,
             jenis: data.jenis,
             kategori_bahan: data.kategori_bahan,
             harga: data.harga,
             satuan: data.satuan,
             jumlah: data.Jumlah_bahan.jumlah_bahan,
-          }
+          };
         });
         return item;
-      });      
+      });
       res.status(200).json({
+        status: "Success",
+        message: "Successfully get All Produk",
         data: hasil,
-      })
-
-      // json.Bahan = json.Bahan.map((item) => {
-      //   return {
-      //     ...item,
-      //     jumlah: item.Jumlah_bahan.jumlah_bahan,
-      //   }
-      // })
-      // }).then((docs) => {
-      //   const response = {
-      //     data: docs.map((doc) => {
-      //       return {
-      //         kode_produk: doc.kode_produk,
-      //         nama_produk: doc.nama_produk,
-      //         kategori: doc.kategori,
-      //         harga_produk: doc.harga_produk,
-      //         createdAt: doc.createdAt,
-      //         updatedAt: doc.updatedAt,
-      //         bahan: [
-      //           {
-      //             nama: doc.Bahan.nama,
-      //             jenis: doc.Bahan.jenis,
-      //             harga: doc.Bahan.harga,
-      //             satuan: doc.Bahan.satuan,
-                  
-      //           },
-      //         ],
-      //       };
-      //     }),
-      //   };
-      //   res.status(200).json(response)
-      // });
-      //   const produk = await Produk.findByPk(kode_produk,
-      //     {
-      //       include: [
-      //         {
-      //           model: Bahan_Baku,
-      //           as: "Bahan",
-      //           attributes: ["nama","jenis", "kategori_bahan", "harga","satuan"],
-      //           through: {
-      //             as: "Jumlah_bahan",
-      //             attributes: ["jumlah_bahan"],
-      //           },
-      //         },
-      //       ],
-      //     }
-      //   );
-
-      //    produk.Bahan.map((item) => {
-      //     if (item.Jumlah_bahan) {
-      //         item.Jumlah_bahan = item.Jumlah_bahan.jumlah_bahan;
-      //     }
-      //     return item;
-      //    });
-
-      //  const hasil = produk[0].toJSON();
-      //  hasil.Jumlah_bahan = hasil.Jumlah_bahan.map((item)=>{
-      //   item.Jumlah_bahan = item.Jumlah_bahan.jumlah_bahan;
-      //  });
-
-
+      });
     } catch (error) {
       next(error);
     }
   },
+
   handlerDeleteProduk: async (req, res, next) => {
     try {
       const { kode_produk } = req.params;
@@ -155,14 +105,15 @@ module.exports = {
       const produk = await Produk.findOne({
         where: {
           kode_produk: kode_produk,
-        }, through: {
+        },
+        through: {
           model: Produk_Bahan,
-        }
+        },
       });
       if (!produk) {
         throw new Error("Produk not found");
       }
-
+      
       await produk.destroy();
 
       res.status(200).json({
@@ -173,36 +124,110 @@ module.exports = {
       next(error);
     }
   },
-  handlerEditProduk: async (req, res, next) => {
+
+  handlerPutProduk: async (req, res, next) => {
     try {
       const { kode_produk } = req.params;
-      const { nama_produk, kategori, harga_produk, bahan } =
-      req.body;
+      const { nama_produk, kategori, harga_produk } = req.body;
       const produk = await Produk.findOne({
         where: {
           kode_produk,
-        }
+        },
       }).then(async (data) => {
         if (!data) {
           throw new Error("Produk not found");
         }
         data.set({
-          nama_produk, kategori, harga_produk, bahan
+          nama_produk,
+          kategori,
+          harga_produk,
         });
-        await Produk_Bahan.findOne({
-          where: {
-            kode_produk,
-          }
-        }).then((bahan) => {
-          if (!bahan) {
-            throw new Error("Produk not found");
-          }
-          bahan.set()
-        })
+        await data.save();
       });
-      
+
+      res.status(201).json({
+        status: "Success",
+        message: "Successfully update Produk",
+        data: produk,
+      });
     } catch (error) {
       next(error);
     }
-  }
+  },
+
+  handlerPutProdukBahan: async (req, res, next) => {
+    const { kode_produk, kode_bahan } = req.params;
+    const { jumlah_bahan } = req.body;
+    try {
+      const bahan = await Produk_Bahan.findOne({
+        where: {
+          kode_produk: kode_produk,
+          kode_bahan: kode_bahan,
+        },
+      });
+      if (!bahan) {
+        throw new Error("Bahan from Produk not found");
+      }
+      bahan.set({
+        jumlah_bahan,
+      });
+      await bahan.save();
+      res.status(201).json({
+        status: "Success",
+        message: "Successfully update Bahan in Produk",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  handlerAddBahanInProduk: async (req, res, next) => {
+    try {
+      const { kode_produk } = req.params;
+      const { kode_bahan, jumlah_bahan } = req.body;
+      const produk = await Produk.findOne({
+        where: {
+          kode_produk,
+        },
+      });
+      if (!produk) {
+        throw new Error("Produk not found");
+      }
+      const bahan = await Produk_Bahan.create({
+        kode_produk,
+        kode_bahan,
+        jumlah_bahan,
+      });
+
+      res.status(201).json({
+        status: "Success",
+        message: "Successfully add Bahan in Produk",
+        data: bahan,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  handlerDeleteBahanInProduk: async (req, res, next) => {
+    try {
+      const { kode_produk, kode_bahan } = req.params;
+      const bahanProduk = await Produk_Bahan.findOne({
+        where: {
+          kode_bahan,
+          kode_produk,
+        },
+      });
+      if (!bahanProduk) {
+        throw new Error("Bahan not found");
+      }
+      await bahanProduk.destroy();
+      res.status(201).json({
+        status: "Success",
+        message: "Successfully delete bahan in produk",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
