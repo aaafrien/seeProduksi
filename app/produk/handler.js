@@ -183,8 +183,11 @@ module.exports = {
 
   handlerAddBahanInProduk: async (req, res, next) => {
     try {
+      const t = await sequelize.transaction();
       const { kode_produk } = req.params;
-      const { kode_bahan, jumlah_bahan } = req.body;
+      const dataBahan = [];
+      //const { kode_bahan, jumlah_bahan } = req.body;
+      const { bahan } = req.body;
       const produk = await Produk.findOne({
         where: {
           kode_produk,
@@ -193,16 +196,25 @@ module.exports = {
       if (!produk) {
         throw new Error("Produk not found");
       }
-      const bahan = await Produk_Bahan.create({
-        kode_produk,
-        kode_bahan,
-        jumlah_bahan,
-      });
+
+      for (const bahanBaku of bahan) {
+          await Produk_Bahan.create(
+            {
+              kode_produk,
+              kode_bahan: bahanBaku.kode_bahan,
+              jumlah_bahan: bahanBaku.jumlah_bahan,
+            },
+            { transaction: t }
+          ).then((dataBahanBaku) => {
+            dataBahan.push(dataBahanBaku);
+          });
+        }
+        await t.commit();
 
       res.status(201).json({
         status: "Success",
         message: "Successfully add Bahan in Produk",
-        data: bahan,
+        data: dataBahan,
       });
     } catch (error) {
       next(error);
