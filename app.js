@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const ownerRouter = require("./app/owner/route");
+const adminRouter = require("./app/admin/route");
 const bahanBakuRouter = require("./app/bahanBaku/route");
 const produkRouter = require("./app/produk/route");
 
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', indexRouter);
 app.use('/owner', ownerRouter);
+app.use('/admin', adminRouter);
 app.use('/bahanbaku', bahanBakuRouter);
 app.use('/produk', produkRouter);
 //app.use('/users', usersRouter);

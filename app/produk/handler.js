@@ -1,47 +1,58 @@
 const { Produk, Produk_Bahan, Bahan_Baku, sequelize } = require("../../models");
 
 module.exports = {
-
   handlerAddProduk: async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
       const dataBahan = [];
       const { kode_produk, nama_produk, kategori, harga_produk, bahan } =
         req.body;
-      const [produk, check] = await Produk.findOrCreate({
+
+      const produk = await Produk.findOne({
         where: {
           kode_produk: kode_produk,
         },
-        defaults: {
+      });
+      if (produk) {
+        throw new Error("Kode Produk already in use");
+      }
+      const addProduk = await Produk.create(
+        {
           kode_produk,
           nama_produk,
           kategori,
           harga_produk,
         },
-      });
-      if (check) {
-        for (const bahanBaku of bahan) {
-          await Produk_Bahan.create(
-            {
-              kode_produk,
-              kode_bahan: bahanBaku.kode_bahan,
-              jumlah_bahan: bahanBaku.jumlah_bahan,
-            },
-            { transaction: t }
-          ).then((dataBahanBaku) => {
-            dataBahan.push(dataBahanBaku);
-          });
-        }
-        await t.commit();
+        { transaction: t }
+      );
 
-        res.status(201).json({
-          status: "Sucess",
-          message: "Successfully add Produk",
-          data: { produk, bahan: dataBahan },
+      for (const bahanBaku of bahan) {
+        const checkBahan = await Bahan_Baku.findOne({
+          where: {
+            kode: bahanBaku.kode_bahan
+          }
         });
-      } else {
-        throw new Error("Kode Produk has been used");
+        if (!checkBahan) {
+          throw new Error("Bahan not found");
+        }
+        await Produk_Bahan.create(
+          {
+            kode_produk,
+            kode_bahan: bahanBaku.kode_bahan,
+            jumlah_bahan: bahanBaku.jumlah_bahan,
+          },
+          { transaction: t }
+        ).then((dataBahanBaku) => {
+          dataBahan.push(dataBahanBaku);
+        });
       }
+      await t.commit();
+
+      res.status(201).json({
+        status: "Sucess",
+        message: "Successfully add Produk",
+        data: { produk: addProduk, bahan: dataBahan },
+      });
     } catch (error) {
       await t.rollback();
       next(error);
@@ -113,7 +124,7 @@ module.exports = {
       if (!produk) {
         throw new Error("Produk not found");
       }
-      
+
       await produk.destroy();
 
       res.status(200).json({
@@ -198,18 +209,18 @@ module.exports = {
       }
 
       for (const bahanBaku of bahan) {
-          await Produk_Bahan.create(
-            {
-              kode_produk,
-              kode_bahan: bahanBaku.kode_bahan,
-              jumlah_bahan: bahanBaku.jumlah_bahan,
-            },
-            { transaction: t }
-          ).then((dataBahanBaku) => {
-            dataBahan.push(dataBahanBaku);
-          });
-        }
-        await t.commit();
+        await Produk_Bahan.create(
+          {
+            kode_produk,
+            kode_bahan: bahanBaku.kode_bahan,
+            jumlah_bahan: bahanBaku.jumlah_bahan,
+          },
+          { transaction: t }
+        ).then((dataBahanBaku) => {
+          dataBahan.push(dataBahanBaku);
+        });
+      }
+      await t.commit();
 
       res.status(201).json({
         status: "Success",

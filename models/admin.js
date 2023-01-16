@@ -2,12 +2,17 @@ function createModelAdmin(Sequelize, DataTypes) {
   const Admin = Sequelize.define(
     "Admin",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       email_admin: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
       },
-      nama_admin: {
+      name_admin: {
         type: DataTypes.STRING,
         allowNull: false,
       },

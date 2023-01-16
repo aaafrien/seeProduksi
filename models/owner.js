@@ -2,12 +2,17 @@ function createModelOwner(Sequelize, DataTypes) {
   const Owner = Sequelize.define(
     "Owner",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       email_owner: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
       },
-      nama_owner: {
+      name_owner: {
         type: DataTypes.STRING,
         allowNull: false,
       },

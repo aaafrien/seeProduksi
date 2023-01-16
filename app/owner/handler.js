@@ -5,11 +5,11 @@ const generateAccessToken = require("../../utils/tokenManager");
 module.exports = {
   handlerRegisterOwner: async (req, res, next) => {
     try {
-      const { email_owner, nama_owner, hp_owner, password_owner } = req.body;
+      const { email_owner, name_owner, hp_owner, password_owner } = req.body;
       const hashPassword = await bcrypt.hash(password_owner, 10);
       const owner = await Owner.create({
         email_owner,
-        nama_owner,
+        name_owner,
         hp_owner,
         password_owner: hashPassword,
       });
@@ -26,11 +26,11 @@ module.exports = {
   handlerAddAdmin: async (req, res, next) => {
     try {
       const owner = req.user;
-      const { email_admin, nama_admin, password_admin, role_admin } = req.body;
+      const { email_admin, name_admin, password_admin, role_admin } = req.body;
       const hashPassword = await bcrypt.hash(password_admin, 10);
       const admin = await Admin.create({
         email_admin, 
-        nama_admin, 
+        name_admin, 
         password_admin: hashPassword,
         email_owner: owner.email,
         role_admin,
@@ -40,7 +40,7 @@ module.exports = {
         message: "Successfully add Admin",
         data: {
           admin: {
-          nama_admin: admin.nama_admin,
+          name_admin: admin.name_admin,
           email_admin: admin.email_admin,
           role_admin: admin.role_admin,
           }
@@ -72,28 +72,19 @@ module.exports = {
 
       const accessToken = generateAccessToken({
         email: owner.email_owner,
-        nama: owner.nama_owner,
+        nama: owner.name_owner,
         role: "owner",
       });
       res.status(201).json({
         status: "Success",
         message: "Successfully login owner",
         data: {
-          owner: {
-            email_owner: owner.email_owner,
-            nama_owner: owner.nama_owner,
+            email: owner.email_owner,
+            name: owner.name_owner,
+            role: "owner",
             accessToken,
-          },
         },
       });
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  handlerAddProduk: async (req, res, next) => {
-    try {
-
     } catch (error) {
       next(error);
     }
