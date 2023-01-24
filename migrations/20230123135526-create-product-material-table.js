@@ -3,39 +3,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("admin", {
+    await queryInterface.createTable("produk_bahan", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
-      email_admin: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      name_admin: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      password_admin: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      role_admin: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      email_owner: {
-        type: Sequelize.STRING,
+      kode_produk: {
+        type: Sequelize.STRING(10),
         allowNull: false,
         references: {
-          model: "owner",
-          key: "email_owner",
+          model: "products",
+          key: "kode_produk",
         },
-        onDelete: "CASCADE",
         onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      kode_bahan: {
+        type: Sequelize.STRING(10),
+        allowNull: false,
+        references: {
+          model: "bahan_baku",
+          key: "kode",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      jumlah_bahan: {
+        type: Sequelize.INTEGER(10),
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -49,6 +46,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("admin");
+    await queryInterface.dropTable("produk_bahan");
   },
 };

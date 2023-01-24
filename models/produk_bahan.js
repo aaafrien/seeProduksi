@@ -9,17 +9,17 @@ function createModelProdukBahan(Sequelize, DataTypes) {
         autoIncrement: true,
       },
       kode_produk: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
-          model: "produk",
+          model: "product",
           key: "kode_produk",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
       kode_bahan: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
         allowNull: false,
         references: {
           model: "bahan_baku",
@@ -29,7 +29,7 @@ function createModelProdukBahan(Sequelize, DataTypes) {
         onDelete: "CASCADE",
       },
       jumlah_bahan: {
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       createdAt: {

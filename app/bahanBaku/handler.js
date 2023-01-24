@@ -3,7 +3,12 @@ const { Bahan_Baku } = require("../../models");
 module.exports = {
   handlerGetBahanBaku: async (req, res, next) => {
     try {
-      const bahan = await Bahan_Baku.findAll();
+      const id_owner = req.user.id_owner;
+      const bahan = await Bahan_Baku.findAll({
+        where: {
+          id_owner,
+        },
+      });
       res.status(200).json({
         status: "Success",
         message: "Successfully get bahan",
@@ -15,12 +20,14 @@ module.exports = {
   },
   handlerAddBahanBaku: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const { kode, nama, jenis, kategori_bahan, harga, satuan, stok } =
         req.body;
 
       const [bahanBaku, check] = await Bahan_Baku.findOrCreate({
         where: {
           kode: kode,
+          id_owner,
         },
         defaults: {
           kode,
@@ -30,6 +37,7 @@ module.exports = {
           harga,
           satuan,
           stok,
+          id_owner,
         },
       });
       if (check) {
@@ -46,6 +54,7 @@ module.exports = {
     }
   },
   handlerPutBahanBaku: async (req, res, next) => {
+    const id_owner = req.user.id_owner;
     const { jenis, nama, kategori_bahan, harga, satuan, stok } = req.body;
     const { kode } = req.params;
     //   const tes = await Bahan_Baku.findOne({
@@ -59,9 +68,10 @@ module.exports = {
     await Bahan_Baku.findOne({
       where: {
         kode: kode,
+        id_owner,
       },
     })
-    .then(async (data) => {
+      .then(async (data) => {
         if (!data) {
           throw new Error("Bahan not found");
         }
@@ -77,7 +87,6 @@ module.exports = {
         res.status(200).json({
           status: "Success",
           message: "Successfully update bahan baku",
-          data: data,
         });
       })
       .catch((error) => {
@@ -85,10 +94,12 @@ module.exports = {
       });
   },
   handlerDeleteBahanBaku: async (req, res, next) => {
+    const id_owner = req.user.id_owner;
     const { kode } = req.params;
     await Bahan_Baku.findOne({
       where: {
         kode: kode,
+        id_owner,
       },
     })
       .then(async (data) => {
@@ -96,9 +107,9 @@ module.exports = {
           throw new Error("Bahan not found");
         }
         await data.destroy();
-        res.status(200).jsoN({
+        res.status(200).json({
           status: "Success",
-          message: "Successfully delete bahan",
+          message: "Successfully delete Bahan",
         });
       })
       .catch((error) => {

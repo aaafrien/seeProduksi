@@ -3,32 +3,32 @@ function createModelBahanBaku(Sequelize, DataTypes) {
     "Bahan_Baku",
     {
       kode: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
       },
       nama: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       jenis: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       kategori_bahan: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       harga: {
-        type: DataTypes.INTEGER(15),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       satuan: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       stok: {
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       createdAt: {

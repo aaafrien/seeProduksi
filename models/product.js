@@ -1,26 +1,21 @@
-function createModelOwner(Sequelize, DataTypes) {
-  const Owner = Sequelize.define(
-    "Owner",
+function createModelProduk(Sequelize, DataTypes) {
+  const Product = Sequelize.define(
+    "Product",
     {
-      id: {
-        type: DataTypes.INTEGER,
+      kode_produk: {
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
       },
-      email_owner: {
+      nama_produk: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      name_owner: {
+      kategori: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      hp_owner: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      password_owner: {
+      harga_produk: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -34,11 +29,10 @@ function createModelOwner(Sequelize, DataTypes) {
       },
     },
     {
-      tableName: "owner",
+      tableName: "products",
     }
   );
-
-  return Owner;
+  return Product;
 }
 
-module.exports = createModelOwner;
+module.exports = createModelProduct;

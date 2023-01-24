@@ -3,11 +3,15 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("produk", {
+    await queryInterface.createTable("products", {
+      id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+      },
       kode_produk: {
         type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
       },
       nama_produk: {
         type: Sequelize.STRING,
@@ -29,10 +33,20 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      id_owner: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      }
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("produk");
+    await queryInterface.dropTable("products");
   },
 };

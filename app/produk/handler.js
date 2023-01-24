@@ -2,6 +2,7 @@ const { Produk, Produk_Bahan, Bahan_Baku, sequelize } = require("../../models");
 
 module.exports = {
   handlerAddProduk: async (req, res, next) => {
+    const id_owner = req.user.id_owner;
     const t = await sequelize.transaction();
     try {
       const dataBahan = [];
@@ -11,6 +12,7 @@ module.exports = {
       const produk = await Produk.findOne({
         where: {
           kode_produk: kode_produk,
+          id_owner,
         },
       });
       if (produk) {
@@ -22,6 +24,7 @@ module.exports = {
           nama_produk,
           kategori,
           harga_produk,
+          id_owner,
         },
         { transaction: t }
       );
@@ -29,7 +32,8 @@ module.exports = {
       for (const bahanBaku of bahan) {
         const checkBahan = await Bahan_Baku.findOne({
           where: {
-            kode: bahanBaku.kode_bahan
+            kode: bahanBaku.kode_bahan,
+            id_owner,
           }
         });
         if (!checkBahan) {
@@ -40,6 +44,7 @@ module.exports = {
             kode_produk,
             kode_bahan: bahanBaku.kode_bahan,
             jumlah_bahan: bahanBaku.jumlah_bahan,
+            id_owner,
           },
           { transaction: t }
         ).then((dataBahanBaku) => {
@@ -61,7 +66,11 @@ module.exports = {
 
   handlerGetAllProduk: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const produk = await Produk.findAll({
+        where: {
+          id_owner,
+        },
         include: [
           {
             model: Bahan_Baku,
@@ -111,11 +120,13 @@ module.exports = {
 
   handlerDeleteProduk: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const { kode_produk } = req.params;
 
       const produk = await Produk.findOne({
         where: {
           kode_produk: kode_produk,
+          id_owner,
         },
         through: {
           model: Produk_Bahan,
@@ -138,11 +149,13 @@ module.exports = {
 
   handlerPutProduk: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const { kode_produk } = req.params;
       const { nama_produk, kategori, harga_produk } = req.body;
       const produk = await Produk.findOne({
         where: {
           kode_produk,
+          id_owner,
         },
       }).then(async (data) => {
         if (!data) {
@@ -159,7 +172,6 @@ module.exports = {
       res.status(201).json({
         status: "Success",
         message: "Successfully update Produk",
-        data: produk,
       });
     } catch (error) {
       next(error);
@@ -194,6 +206,7 @@ module.exports = {
 
   handlerAddBahanInProduk: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const t = await sequelize.transaction();
       const { kode_produk } = req.params;
       const dataBahan = [];
@@ -202,6 +215,7 @@ module.exports = {
       const produk = await Produk.findOne({
         where: {
           kode_produk,
+          id_owner,
         },
       });
       if (!produk) {
@@ -234,6 +248,7 @@ module.exports = {
 
   handlerDeleteBahanInProduk: async (req, res, next) => {
     try {
+      const id_owner = req.user.id_owner;
       const { kode_produk, kode_bahan } = req.params;
       const bahanProduk = await Produk_Bahan.findOne({
         where: {

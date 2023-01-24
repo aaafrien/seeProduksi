@@ -4,33 +4,37 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("bahan_baku", {
-      kode: {
-        type: Sequelize.STRING(10),
+      id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
+      kode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       nama: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       jenis: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       kategori_bahan: {
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       harga: {
-        type: Sequelize.INTEGER(15),
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       satuan: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       stok: {
-        type: Sequelize.INTEGER(10),
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdAt: {
@@ -41,6 +45,16 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      id_owner: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      }
     });
   },
 
