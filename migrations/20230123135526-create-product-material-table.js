@@ -11,7 +11,7 @@ module.exports = {
         autoIncrement: true,
       },
       kode_produk: {
-        type: Sequelize.STRING(10),
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: "products",
@@ -21,7 +21,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       kode_bahan: {
-        type: Sequelize.STRING(10),
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: "bahan_baku",
@@ -31,7 +31,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       jumlah_bahan: {
-        type: Sequelize.INTEGER(10),
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdAt: {

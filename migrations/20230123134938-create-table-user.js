@@ -40,7 +40,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: "roles",
-          key: id,
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
@@ -50,7 +50,7 @@ module.exports = {
         allowNull: true,
         references: {
           model: "users",
-          key: id,
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
