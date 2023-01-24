@@ -6,8 +6,8 @@ const router = express.Router();
 // For Produk 
 router.get('/', authenticationToken, handlerGetAllProduk);
 router.post("/", authenticationToken, handlerAddProduk);
-router.put("/:kode_produk", authenticationToken, handlerPutProduk);
-router.delete("/:kode_produk", authenticationToken, handlerDeleteProduk);
+router.put("/:id_product", authenticationToken, handlerPutProduk);
+router.delete("/:id_product", authenticationToken, handlerDeleteProduk);
 
 // For Bahan in Produk
 router.post("/:kode_produk/bahan", authenticationToken, handlerAddBahanInProduk);
