@@ -1,13 +1,13 @@
 function applyExtraSetup(sequelize) {
-  const { User, Role, Bahan_Baku, Product, Produk_Bahan } = sequelize.models;
+  const { User, Role, Material, Product, Material_Product } = sequelize.models;
 
   Role.hasMany(User, {
-    foreignKey: "id_role",
+    foreignKey: "role",
     sourceKey: "id",
   });
 
   User.belongsTo(Role, {
-    foreignKey: "id_role",
+    foreignKey: "role",
     sourceKey: "id",
   });
   
@@ -23,16 +23,16 @@ function applyExtraSetup(sequelize) {
     as: "Admin",
   });
 
-  Product.belongsToMany(Bahan_Baku, {
-    through: Produk_Bahan,
-    as: "Bahan",
-    foreignKey: "kode_produk",
+  Product.belongsToMany(Material, {
+    through: Material_Product,
+    as: "Material",
+    foreignKey: "id_produk",
   });
 
-  Bahan_Baku.belongsToMany(Product, {
-    through: Produk_Bahan,
+  Material.belongsToMany(Product, {
+    through: Material_Product,
     as: "Product",
-    foreignKey: "kode_bahan",
+    foreignKey: "id_bahan",
   });
 }
 

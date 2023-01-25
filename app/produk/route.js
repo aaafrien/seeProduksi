@@ -10,7 +10,7 @@ router.put("/:id_product", authenticationToken, handlerPutProduk);
 router.delete("/:id_product", authenticationToken, handlerDeleteProduk);
 
 // For Bahan in Produk
-router.post("/:kode_produk/bahan", authenticationToken, handlerAddBahanInProduk);
-router.put("/:kode_produk/bahan/:kode_bahan", authenticationToken, handlerPutProdukBahan);
-router.delete("/:kode_produk/bahan/:kode_bahan", authenticationToken, handlerDeleteBahanInProduk);
+router.post("/:id_product/bahan", authenticationToken, handlerAddBahanInProduk);
+router.put("/:id_product/bahan/:id_material", authenticationToken, handlerPutProdukBahan);
+router.delete("/:id_product/bahan/:id_material", authenticationToken, handlerDeleteBahanInProduk);
 module.exports = router;

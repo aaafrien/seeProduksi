@@ -1,21 +1,25 @@
-function createModelProduk(Sequelize, DataTypes) {
+function createModelProduct(Sequelize, DataTypes) {
   const Product = Sequelize.define(
     "Product",
     {
-      kode_produk: {
-        type: DataTypes.STRING,
+      id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
-      nama_produk: {
+      code: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      kategori: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      harga_produk: {
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      price: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -27,6 +31,16 @@ function createModelProduk(Sequelize, DataTypes) {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      id_owner: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      }
     },
     {
       tableName: "products",

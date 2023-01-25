@@ -3,37 +3,37 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("bahan_baku", {
+    await queryInterface.createTable("materials", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
-      kode: {
+      code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      nama: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      jenis: {
+      type: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      kategori_bahan: {
+      material_category: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      harga: {
+      price: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      satuan: {
+      unit: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      stok: {
+      stock: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -59,6 +59,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("bahan_baku");
+    await queryInterface.dropTable("materials");
   },
 };

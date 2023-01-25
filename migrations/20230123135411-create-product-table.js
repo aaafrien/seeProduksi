@@ -9,19 +9,19 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      kode_produk: {
+      code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      nama_produk: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      kategori: {
+      category: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      harga_produk: {
+      price: {
         type: Sequelize.STRING,
         allowNull: false,
       },

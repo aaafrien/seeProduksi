@@ -1,33 +1,37 @@
 function createModelBahanBaku(Sequelize, DataTypes) {
-  const bahanBaku = Sequelize.define(
-    "Bahan_Baku",
+  const Material = Sequelize.define(
+    "Material",
     {
-      kode: {
-        type: DataTypes.STRING,
+      id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
-      nama: {
+      code: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      jenis: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      kategori_bahan: {
+      type: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      harga: {
+      material_category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      price: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      satuan: {
+      unit: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      stok: {
+      stock: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -39,12 +43,22 @@ function createModelBahanBaku(Sequelize, DataTypes) {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      id_owner: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      }
     },
     {
-      tableName: "bahan_baku",
+      tableName: "materials",
     }
   );
-  return bahanBaku;
+  return Material;
 }
 
 module.exports = createModelBahanBaku;

@@ -75,9 +75,9 @@ const productService = {
   addProduct: async (product, bahan) => {
     const t = await sequelize.transaction();
     const dataBahan = [];
-    const produk = await Produk.findOne({
+    const produk = await Product.findOne({
       where: {
-        kode_produk: product.kode_produk,
+        code: product.code,
         id_owner: product.id_owner,
       },
     });
@@ -91,21 +91,21 @@ const productService = {
       { transaction: t }
     );
     for (const bahanBaku of bahan) {
-      const checkBahan = await Bahan_Baku.findOne({
-        where: {
-          kode: bahanBaku.kode_bahan,
-          id_owner,
-        },
-      });
-      if (!checkBahan) {
-        throw new Error("Bahan not found");
+      // const checkMaterial = await Material.findOne({
+      //   where: {
+      //     kode: bahanBaku.code,
+      //     id_owner,
+      //   },
+      // });
+      const checkMaterial = await Material.findByPk(bahanBaku.id);
+      if (!checkMaterial) {
+        throw new Error("Material not found");
       }
-      await Produk_Bahan.create(
+      await Material_Product.create(
         {
-          kode_produk: product.kode_produk,
-          kode_bahan: bahanBaku.kode_bahan,
-          jumlah_bahan: bahanBaku.jumlah_bahan,
-          id_owner: product.id_owner,
+          id_product: product.id,
+          id_bahan: bahanBaku.id_bahan,
+          material_quantity: bahanBaku.material_quantity,
         },
         { transaction: t }
       ).then((dataBahanBaku) => {

@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", authenticationToken, handlerGetBahanBaku);
 router.post("/", authenticationToken, handlerAddBahanBaku);
-router.put("/:kode", authenticationToken, handlerPutBahanBaku);
-router.delete("/:kode", authenticationToken, handlerDeleteBahanBaku);
+router.put("/:id_material", authenticationToken, handlerPutBahanBaku);
+router.delete("/:id_material", authenticationToken, handlerDeleteBahanBaku);
 
 module.exports = router;

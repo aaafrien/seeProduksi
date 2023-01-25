@@ -184,9 +184,9 @@ module.exports = {
   handlerPutProdukBahan: async (req, res, next) => {
 
     try {
-      const { kode_produk, kode_bahan} = req.params;
-      const { jumlah_bahan } = req.body;
-      await produkBahanService.updateBahan(kode_produk, kode_bahan, jumlah_bahan);
+      const { id_product, id_material} = req.params;
+      const { material_quantity } = req.body;
+      await produkBahanService.updateBahan(id_product, id_product, material_quantity);
       // const bahan = await Produk_Bahan.findOne({
       //   where: {
       //     kode_produk: kode_produk,
@@ -213,11 +213,11 @@ module.exports = {
     try {
       const id_owner = req.user.id_owner;
       const t = await sequelize.transaction();
-      const { kode_produk, kode_bahan } = req.params;
+      const { id_product, id_material } = req.params;
       //const dataBahan = [];
       //const { kode_bahan, jumlah_bahan } = req.body;
-      const { bahan } = req.body;
-      const dataBahan = await produkBahanService(kode_produk, id_owner, kode_bahan, bahan);
+      const { materials } = req.body;
+      const dataBahan = await produkBahanService(id_product, id_owner, id_material, materials);
       // const produk = await Produk.findOne({
       //   where: {
       //     kode_produk,
@@ -255,9 +255,9 @@ module.exports = {
   handlerDeleteBahanInProduk: async (req, res, next) => {
     try {
       const id_owner = req.user.id_owner;
-      const { kode_produk, kode_bahan } = req.params;
+      const { id_product, id_material } = req.params;
       
-      await produkBahanService.deleteBahan(kode_produk, kode_bahan);
+      await produkBahanService.deleteBahan(id_product, id_material);
       // const bahanProduk = await Produk_Bahan.findOne({
       //   where: {
       //     kode_bahan,

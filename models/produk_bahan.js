@@ -1,6 +1,6 @@
 function createModelProdukBahan(Sequelize, DataTypes) {
-  const produkBahan = Sequelize.define(
-    "Produk_Bahan",
+  const Material_Product = Sequelize.define(
+    "Material_Product",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,27 +8,27 @@ function createModelProdukBahan(Sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true,
       },
-      kode_produk: {
-        type: DataTypes.STRING,
+      id_product: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "product",
-          key: "kode_produk",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      kode_bahan: {
-        type: DataTypes.STRING,
+      id_material: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "bahan_baku",
-          key: "kode",
+          model: "material",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      jumlah_bahan: {
+      material_quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -42,10 +42,10 @@ function createModelProdukBahan(Sequelize, DataTypes) {
       },
     },
     {
-      tableName: "produk_bahan",
+      tableName: "materials_products",
     }
   );
-  return produkBahan;
+  return Material_Product;
 }
 
 module.exports = createModelProdukBahan;

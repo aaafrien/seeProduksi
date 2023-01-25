@@ -38,7 +38,7 @@ function createModelUser(Sequelize, DataTypes) {
         allowNull: false,
         references: {
           model: "role",
-          key: id,
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
@@ -48,7 +48,7 @@ function createModelUser(Sequelize, DataTypes) {
         allowNull: true,
         references: {
           model: "user",
-          key: id,
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
