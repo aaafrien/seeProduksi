@@ -1,4 +1,4 @@
-const { Product, Bahan_Baku, sequelize } = require("../../models");
+const { Product, Material, Material_Product, sequelize } = require("../../models");
 
 const productService = {
   getAllProducts: async (id_owner) => {
@@ -8,37 +8,40 @@ const productService = {
       },
       include: [
         {
-          model: Bahan_Baku,
-          as: "Bahan",
+          model: Material,
+          as: "Materials",
           attributes: [
-            "kode",
-            "nama",
-            "jenis",
-            "kategori_bahan",
-            "harga",
-            "satuan",
+            "id",
+            "code",
+            "name",
+            "type",
+            "material_category",
+            "price",
+            "unit",
           ],
           through: {
-            as: "Jumlah_bahan",
-            attributes: ["id", "jumlah_bahan"],
+            as: "Material_Product",
+            attributes: ["id", "material_quantity"],
           },
         },
       ],
     });
+    
     const json = products.map((item) => {
       return item.toJSON();
     });
 
     const hasil = json.map((item) => {
-      item.Bahan = item.Bahan.map((data) => {
+      item.Materials = item.Materials.map((data) => {
         return {
-          kode_bahan: data.kode,
-          nama: data.nama,
-          jenis: data.jenis,
-          kategori_bahan: data.kategori_bahan,
-          harga: data.harga,
-          satuan: data.satuan,
-          jumlah: data.Jumlah_bahan.jumlah_bahan,
+          id: data.id,
+          code: data.code,
+          name: data.name,
+          type: data.type,
+          material_category: data.material_category,
+          price: data.price,
+          unit: data.unit,
+          material_quantity: data.Material_Product.material_quantity,
         };
       });
       return item;
@@ -75,46 +78,55 @@ const productService = {
   addProduct: async (product, bahan) => {
     const t = await sequelize.transaction();
     const dataBahan = [];
-    const produk = await Product.findOne({
-      where: {
-        code: product.code,
-        id_owner: product.id_owner,
-      },
-    });
-    if (produk) {
-      throw new Error("Kode Produk already in use");
-    }
-    const addProduk = await Product.create(
-      {
-        product,
-      },
-      { transaction: t }
-    );
-    for (const bahanBaku of bahan) {
-      // const checkMaterial = await Material.findOne({
-      //   where: {
-      //     kode: bahanBaku.code,
-      //     id_owner,
-      //   },
-      // });
-      const checkMaterial = await Material.findByPk(bahanBaku.id);
-      if (!checkMaterial) {
-        throw new Error("Material not found");
+    try {
+      const produk = await Product.findOne({
+        where: {
+          code: product.code,
+          id_owner: product.id_owner,
+        },
+      });
+      if (produk) {
+        throw new Error("Kode Produk already in use");
       }
-      await Material_Product.create(
+      const addProduk = await Product.create(
         {
-          id_product: product.id,
-          id_bahan: bahanBaku.id_bahan,
-          material_quantity: bahanBaku.material_quantity,
+          code: product.code,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          id_owner: product.id_owner,
         },
         { transaction: t }
-      ).then((dataBahanBaku) => {
-        dataBahan.push(dataBahanBaku);
-      });
-    }
-    await t.commit();
+      );
+      for (const bahanBaku of bahan) {
+        // const checkMaterial = await Material.findOne({
+        //   where: {
+        //     kode: bahanBaku.code,
+        //     id_owner,
+        //   },
+        // });
+        const checkMaterial = await Material.findByPk(bahanBaku.id);
+        if (!checkMaterial) {
+          throw new Error("Material not found");
+        }
+        await Material_Product.create(
+          {
+            id_product: addProduk.id,
+            id_material: bahanBaku.id,
+            material_quantity: bahanBaku.material_quantity,
+          },
+          { transaction: t }
+        ).then((dataBahanBaku) => {
+          dataBahan.push(dataBahanBaku);
+        });
+      }
+      await t.commit();
 
-    return { addProduk, dataBahan };
+      return { addProduk, dataBahan };
+    } catch (error) {
+      await t.rollback();
+      throw new Error(error);
+    }
   },
 };
 

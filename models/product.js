@@ -6,6 +6,7 @@ function createModelProduct(Sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
       },
       code: {
         type: DataTypes.STRING,

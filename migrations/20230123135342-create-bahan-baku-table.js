@@ -8,6 +8,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
       },
       code: {
         type: Sequelize.STRING,
@@ -54,7 +55,7 @@ module.exports = {
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
-      }
+      },
     });
   },
 

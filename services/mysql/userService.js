@@ -12,6 +12,15 @@ const userService = {
         }
     },
     addAdmin: async (user) => {
+        const getAdmin = await User.findOne({
+            where: {
+                email: user.email,
+            }
+        });
+        if (getAdmin) {
+            throw new Error("Email has been registered");
+        }
+        console.log(user.id_owner);
         const newAdmin = await User.create(user);
         return {
             id: newAdmin.id,

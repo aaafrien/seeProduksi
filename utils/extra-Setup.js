@@ -25,14 +25,14 @@ function applyExtraSetup(sequelize) {
 
   Product.belongsToMany(Material, {
     through: Material_Product,
-    as: "Material",
-    foreignKey: "id_produk",
+    as: "Materials",
+    foreignKey: "id_product",
   });
 
   Material.belongsToMany(Product, {
     through: Material_Product,
-    as: "Product",
-    foreignKey: "id_bahan",
+    as: "Products",
+    foreignKey: "id_material",
   });
 }
 
