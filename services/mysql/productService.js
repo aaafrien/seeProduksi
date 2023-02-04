@@ -99,12 +99,6 @@ const productService = {
         { transaction: t }
       );
       for (const bahanBaku of bahan) {
-        // const checkMaterial = await Material.findOne({
-        //   where: {
-        //     kode: bahanBaku.code,
-        //     id_owner,
-        //   },
-        // });
         const checkMaterial = await Material.findByPk(bahanBaku.id);
         if (!checkMaterial) {
           throw new Error("Material not found");
@@ -123,6 +117,7 @@ const productService = {
       await t.commit();
 
       return { addProduk, dataBahan };
+
     } catch (error) {
       await t.rollback();
       throw new Error(error);

@@ -6,15 +6,7 @@ const produkBahanService = {
     const dataBahan = [];
     try {
       const product = await productService.getProduct(id_product);
-      // const product = await Produk_Bahan.findOne({
-      //   where: {
-      //     kode_produk,
-      //     id_owner,
-      //   },
-      // });
-      // if (!product) {
-      //   throw new Error("Product not found");
-      // }
+
       for (const bahanBaku of materials) {
         await Material_Product.create(
           {
@@ -51,22 +43,18 @@ const produkBahanService = {
     return bahan;
   },
   deleteBahan: async (id_product, id_material) => {
-    try {
-      const bahanProduk = await Material_Product.findOne({
-        where: {
-          id_product,
-          id_material,
-        },
-      });
+    const bahanProduk = await Material_Product.findOne({
+      where: {
+        id_product,
+        id_material,
+      },
+    });
 
-      if (!bahanProduk) {
-        throw new Error("Material not found");
-      }
-      await bahanProduk.destroy();
-      return bahanProduk;
-    } catch (error) {
-      next(error);
+    if (!bahanProduk) {
+      throw new Error("Material not found");
     }
+    await bahanProduk.destroy();
+    return bahanProduk;
   },
 };
 
