@@ -53,11 +53,11 @@ function createModelUser(Sequelize, DataTypes) {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      // active: {
-      //   type: DataTypes.BOOLEAN,
-      //   allowNull: false,
-      //   defaultValue: true,
-      // },
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
     },
     {
       tableName: "users",
