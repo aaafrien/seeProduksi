@@ -109,4 +109,17 @@ module.exports = {
       next(error);
     }
   },
+  handlerGetDetailProduk: async (req, res, next) => {
+    try {
+       const { id_product } = req.params;
+       const produk = await productService.getDataProductById(id_product);
+       res.status(200).json({
+        status: "success",
+        message: "Successfully get detail Product",
+        data: produk,
+       })
+    } catch (error) {
+      next(error);
+    }
+  }
 };

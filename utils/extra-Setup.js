@@ -1,5 +1,5 @@
 function applyExtraSetup(sequelize) {
-  const { User, Role, Material, Product, Material_Product } = sequelize.models;
+  const { User, Role, Material, Product, Material_Product, Transaction } = sequelize.models;
 
   Role.hasMany(User, {
     foreignKey: "role",
@@ -34,6 +34,28 @@ function applyExtraSetup(sequelize) {
     as: "Products",
     foreignKey: "id_material",
   });
+
+  User.hasMany(Transaction, {
+    foreignKey: "id_user",
+    sourceKey: "id",
+  });
+
+  User.hasMany(Transaction, {
+    foreignKey: "id_owner",
+    sourceKey: "id",
+  })
+
+  Transaction.belongsTo(User, {
+    foreignKey: "id_user",
+    sourceKey: "id",
+  });
+
+  Transaction.belongsTo(User, {
+    foreignKey: "id_owner",
+    sourceKey: "id",
+  });
+
+  
 }
 
 module.exports = applyExtraSetup;

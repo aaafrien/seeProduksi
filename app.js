@@ -11,6 +11,7 @@ var usersRouter = require('./routes/users');
 const userRouter = require("./app/user/route");
 const bahanBakuRouter = require("./app/bahanBaku/route");
 const produkRouter = require("./app/produk/route");
+const transactionRouter = require("./app/transaksi/route");
 
 const customErrorHandler = require("./middleware/customErrorHandler");
 const handler404NotFound = require("./middleware/handler404NotFound");
@@ -27,8 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/owner', ownerRouter);
 // app.use('/admin', adminRouter);
 app.use('/user', userRouter);
-app.use('/bahanbaku', bahanBakuRouter);
-app.use('/produk', produkRouter);
+app.use('/material', bahanBakuRouter);
+app.use('/product', produkRouter);
+app.use('/transaction', transactionRouter);
 //app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

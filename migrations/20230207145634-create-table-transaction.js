@@ -3,30 +3,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("transactions", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      fullName: {
-        type: Sequelize.STRING,
+      price: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      phoneNumber: {
-        type: Sequelize.STRING,
+      quantity: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },      
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -35,35 +26,40 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      role: {
+      id_user: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: "roles",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
-      id_owner: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
         references: {
           model: "users",
           key: "id",
         },
-        onUpdate: "CASCADE",
         onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
-      active: {
-        type: Sequelize.BOOLEAN,
+      id_owner: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: true,
-      }
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      id_product: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "products",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
     });
   },
 
   async down(queryInterface, Sequelize) {
-     await queryInterface.dropTable('users');
+    await queryInterface.dropTable("transactions");
   },
 };

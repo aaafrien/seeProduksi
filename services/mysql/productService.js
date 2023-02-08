@@ -1,4 +1,9 @@
-const { Product, Material, Material_Product, sequelize } = require("../../models");
+const {
+  Product,
+  Material,
+  Material_Product,
+  sequelize,
+} = require("../../models");
 
 const productService = {
   getAllProducts: async (id_owner) => {
@@ -26,7 +31,7 @@ const productService = {
         },
       ],
     });
-    
+    console.log(products);
     const json = products.map((item) => {
       return item.toJSON();
     });
@@ -47,6 +52,54 @@ const productService = {
       return item;
     });
     return hasil;
+  },
+  getDataProductById: async (id) => {
+    const product = await Product.findByPk(id, {
+      include: [
+        {
+          model: Material,
+          as: "Materials",
+          attributes: [
+            "id",
+            "code",
+            "name",
+            "type",
+            "material_category",
+            "price",
+            "unit",
+          ],
+          through: {
+            as: "Material_Product",
+            attributes: ["id", "material_quantity"],
+          },
+        },
+      ],
+    });
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    // console.log(product);
+    // const json = product.map((item) => {
+    //   return item.toJSON();
+    // });
+    // console.log(json)
+
+    product.Materials = product.Materials.map((data) => {
+        return {
+          id: data.id,
+          code: data.code,
+          name: data.name,
+          type: data.type,
+          material_category: data.material_category,
+          price: data.price,
+          unit: data.unit,
+          material_quantity: data.Material_Product.material_quantity,
+        };
+      });
+      
+      //console.log(hasil);
+
+    return product;
   },
   getProduct: async (id) => {
     const product = await Product.findByPk(id);
@@ -117,7 +170,6 @@ const productService = {
       await t.commit();
 
       return { addProduk, dataBahan };
-
     } catch (error) {
       await t.rollback();
       throw new Error(error);
