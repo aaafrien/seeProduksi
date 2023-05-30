@@ -1,8 +1,14 @@
 import React from 'react'
 import { FiSettings } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-const setting = () => {
+const Setting = () => {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/login', { replace: true })
+    }
+
     return (
         <>
             <div className="p-10">
@@ -32,6 +38,12 @@ const setting = () => {
                                         <Link to="/setting/karyawan" className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800">
                                             <span className="ml-3">Karyawan</span>
                                         </Link>
+                                    </li>
+                                    <li
+                                        onClick={handleLogout}
+                                        className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800"
+                                    >
+                                        <span className="ml-3">Logout</span>
                                     </li>
                                 </ul>
                             </ul>
@@ -82,4 +94,4 @@ const setting = () => {
     )
 }
 
-export default setting
+export default Setting

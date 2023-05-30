@@ -36,7 +36,6 @@ const InputBahan = () => {
         formik.setSubmitting(false)
         console.log(event)
     }
-    // code var, name var, type, material_category (Kulit, Kain, Aksesoris), price int, unit var, stock int 
 
     const formik = useFormik({
         initialValues: {
