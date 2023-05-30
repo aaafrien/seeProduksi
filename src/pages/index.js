@@ -6,7 +6,7 @@ import Register from "./register";
 import BahanBaku from "./bahanbaku";
 import Laporan from "./laporan";
 import Setting from "./setting";
-import InputBahan from "./inputBahan";
+import InputBahan from "./InputBahan";
 import InputProduk from "./InputProduk";
 import Hpp from "./hpp";
 import Karyawan from "./karyawan";

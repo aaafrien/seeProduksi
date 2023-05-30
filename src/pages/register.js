@@ -2,10 +2,13 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { FiEyeOff, FiEye } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import axios from 'axios';
+import api from '../config/api';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [pw, setPassword] = useState({ password: "", showPw: false });
     const [confirmPw, setConfirmPw] = useState({ password: "", showPw: false });
 
@@ -25,30 +28,37 @@ const Register = () => {
 
     const doRegister = (event) => {
         if (confirmPw.password === formik.values.password) {
+            axios.post(api.urlRegister, event)
+                .then(() => {
+                    navigate('/login')
+                    formik.resetForm()
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
             formik.setSubmitting(false)
-            formik.resetForm()
-            setConfirmPw({ password: "" })
+            // setConfirmPw({ password: "" })
         } else {
             console.log("Password doesn't match")
         }
         console.log(event)
     }
-    
+
     const formik = useFormik({
         initialValues: {
-            name: '',
+            fullName: '',
             email: '',
-            phone: '',
+            phoneNumber: '',
             password: '',
         },
 
         validationSchema: Yup.object({
-            name: Yup.string()
+            fullName: Yup.string()
                 .required('Name is required'),
             email: Yup.string()
                 .required('Email is required')
                 .email('Email is not valid'),
-            phone: Yup.string()
+            phoneNumber: Yup.string()
                 .required('Phone number is required'),
             password: Yup.string()
                 .required('Password is required')
@@ -60,7 +70,7 @@ const Register = () => {
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className="flex w-full h-screen">
-                <div className="hidden relative lg:flex w-1/2 h-full items-center justify-center bg-white items-center">
+                <div className="hidden relative lg:flex w-1/2 h-full justify-center bg-white items-center">
                     {/* <img src="https://berliano.com/asset/img/uploads/banner/6417e252c4131d604e46c87cef4ff472.png"></img> */}
                     <div className="text-5xl font-bold text-rose-900">SeeProduksi</div>
                 </div>
@@ -71,10 +81,10 @@ const Register = () => {
                             <input
                                 className="w-full border-2 border-rose-900 rounded-xl p-3 mt-1 bg-transparent"
                                 placeholder="enter your name"
-                                {...formik.getFieldProps('name')}
+                                {...formik.getFieldProps('fullName')}
                             />
                         </div>
-                        {formik.touched.name && formik.errors.name && <div>{formik.errors.name}</div>}
+                        {formik.touched.fullName && formik.errors.fullName && <div>{formik.errorstouched.fullName}</div>}
                         <div className="mt-3">
                             <input
                                 className="w-full border-2 border-rose-900 rounded-xl p-3 mt-1 bg-transparent"
@@ -87,10 +97,10 @@ const Register = () => {
                             <input
                                 className="w-full border-2 border-rose-900 rounded-xl p-3 mt-1 bg-transparent"
                                 placeholder="enter your phone number"
-                                {...formik.getFieldProps('phone')}
+                                {...formik.getFieldProps('phoneNumber')}
                             />
                         </div>
-                        {formik.touched.phone && formik.errors.phone && <div>{formik.errors.phone}</div>}
+                        {formik.touched.phoneNumber && formik.errors.phoneNumber && <div>{formik.errorstouched.phoneNumber}</div>}
                         <div className="mt-3">
                             <div className="flex items-center justify-between w-full border-2 border-rose-900 rounded-xl p-3 mt-1 bg-transparent">
                                 <input

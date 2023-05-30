@@ -1,10 +1,73 @@
-import React from 'react'
+import { useState } from 'react'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FiPlus, FiChevronDown } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import axios from 'axios'
+import api from '../config/api'
 
-const inputBahan = () => {
+const InputBahan = () => {
+    const [message, setMessage] = useState('')
+    const [materialCategory, setMaterialCategory] = useState('')
+
+    const handleSelectMaterialCategory = (value) => {
+        setMaterialCategory(value)
+        formik.setFieldValue('material_category', value)
+    }
+
+    const token = localStorage.getItem('token')
+
+    const doProduksi = (event) => {
+        axios.post(api.urlBahanBaku, event, {
+            headers: {
+                Authorization: `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                formik.resetForm()
+                setMessage('Data berhasil ditambahkan')
+            })
+            .catch((error) => {
+                console.log(error)
+                setMessage('Data gagal ditambahkan')
+            })
+        formik.setSubmitting(false)
+        console.log(event)
+    }
+    // code var, name var, type, material_category (Kulit, Kain, Aksesoris), price int, unit var, stock int 
+
+    const formik = useFormik({
+        initialValues: {
+            code: '',
+            name: '',
+            type: '',
+            material_category: '',
+            price: '',
+            unit: '',
+            stock: '',
+        },
+
+        validationSchema: Yup.object({
+            code: Yup.string()
+                .required('Code is required'),
+            name: Yup.string()
+                .required('Name is required'),
+            type: Yup.string()
+                .required('Type is required'),
+            material_category: Yup.string()
+                .required('Material category is required'),
+            price: Yup.string()
+                .required('Price is required'),
+            unit: Yup.string()
+                .required('Unit is required'),
+            stock: Yup.string()
+                .required('Stock is required'),
+        }),
+
+        onSubmit: doProduksi
+    })
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
@@ -22,7 +85,7 @@ const inputBahan = () => {
                         </div>
                     </div>
 
-                    <form className="w-full">
+                    <form onSubmit={formik.handleSubmit} className="w-full">
                         <div className="flex flex-col gap-y-5">
                             <div className="flex h-16 pl-4 rounded-lg bg-rose-900 items-center text-white font-bold">
                                 Tambah Bahan Baku
@@ -34,8 +97,8 @@ const inputBahan = () => {
                                 </label>
                                 <Menu as="div" className="relative inline-block text-left">
                                     <div>
-                                    <Menu.Button className="inline-flex w-full justify-center items-center rounded-lg border bg-rose-900 px-4 py-2 text-white focus:outline-none hover:bg-rose-800">
-                                            Pilih jenis
+                                        <Menu.Button className="inline-flex w-full justify-center items-center rounded-lg border bg-rose-900 px-4 py-2 text-white focus:outline-none hover:bg-rose-800">
+                                            {materialCategory === '' ? 'Pilih Jenis Bahan' : materialCategory}
                                             <FiChevronDown className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                                         </Menu.Button>
                                     </div>
@@ -54,48 +117,39 @@ const inputBahan = () => {
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <Link
+                                                            onClick={() => handleSelectMaterialCategory('Kulit')}
                                                             className={classNames(
                                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                 'block px-4 py-2 text-sm'
                                                             )}
                                                         >
-                                                            Tas Wanita
+                                                            Kulit
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <Link
+                                                            onClick={() => handleSelectMaterialCategory('Kain')}
                                                             className={classNames(
                                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                 'block px-4 py-2 text-sm'
                                                             )}
                                                         >
-                                                            Tas Pria
+                                                            Kain
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <Link
+                                                            onClick={() => handleSelectMaterialCategory('Aksesoris')}
                                                             className={classNames(
                                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                 'block px-4 py-2 text-sm'
                                                             )}
                                                         >
-                                                            Dompet
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <Link
-                                                            className={classNames(
-                                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            )}
-                                                        >
-                                                            Pouch
+                                                            Akseseoris
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
@@ -110,8 +164,9 @@ const inputBahan = () => {
                                     Kode
                                 </label>
                                 <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
-                                    placeholder="enter kode bahan">
-                                </input>
+                                    placeholder="enter kode bahan"
+                                    {...formik.getFieldProps('code')}
+                                />
                             </div>
 
                             <div className="flex flex-row items-center">
@@ -119,17 +174,42 @@ const inputBahan = () => {
                                     Nama
                                 </label>
                                 <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
-                                    placeholder="enter nama bahan">
-                                </input>
+                                    placeholder="enter nama bahan"
+                                    {...formik.getFieldProps('name')}
+                                />
+
                             </div>
 
                             <div className="flex flex-row items-center">
                                 <label className="text-black w-32">
-                                    Satuan
+                                    Type
                                 </label>
                                 <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
-                                    placeholder="enter satuan bahan">
-                                </input>
+                                    placeholder="enter type bahan"
+                                    {...formik.getFieldProps('type')}
+                                />
+                            </div>
+
+                            <div className="flex flex-row items-center">
+                                <label className="text-black w-32">
+                                    Harga
+                                </label>
+                                <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
+                                    placeholder="enter harga bahan"
+                                    type='number'
+                                    {...formik.getFieldProps('price')}
+                                />
+
+                            </div>
+
+                            <div className="flex flex-row items-center">
+                                <label className="text-black w-32">
+                                    Unit
+                                </label>
+                                <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
+                                    placeholder="enter unit bahan"
+                                    {...formik.getFieldProps('unit')}
+                                />
                             </div>
 
                             <div className="flex flex-row items-center">
@@ -137,10 +217,12 @@ const inputBahan = () => {
                                     Stock
                                 </label>
                                 <input className="w-full h-12 ml-4 border border-rose-900 bg-transparent rounded-lg p-2"
-                                    placeholder="enter stock bahan">
-                                </input>
+                                    placeholder="enter stock bahan"
+                                    type='number'
+                                    {...formik.getFieldProps('stock')}
+                                />
                             </div>
-                            
+                            {message && <div className="">{message}</div>}
                             <div className="pt-5 flex flex-row gap-3 justify-end">
                                 <button className="bg-transparent border border-rose-900 p-2 text-rose-900 rounded-lg">
                                     <Link to="/bahanbaku">Cancel</Link>
@@ -155,4 +237,4 @@ const inputBahan = () => {
     )
 }
 
-export default inputBahan
+export default InputBahan

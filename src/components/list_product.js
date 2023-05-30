@@ -1,26 +1,7 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import api from '../config/api'
 
-const ListProduct = () => {
-    const [produk, setProduk] = useState([])
-    const token = localStorage.getItem('token')
-
-    useEffect(() => {
-        axios.get(api.urlProduct, {
-            headers: {
-                Authorization: 'bearer ' + token
-            }
-        }).then((res) => {
-            console.log(res.data.data)
-            setProduk(res.data.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }, [])
-
-
+const ListProduct = ({produk}) => {
+    
     return (
         <>
             <div className="pt-16 pl-8 flex flex-row flex-wrap justify-between w-full overflow-auto gap-y-10">
@@ -29,7 +10,7 @@ const ListProduct = () => {
                         <div className="rounded bg-rose-900 h-36"></div>
                         <div class="py-5">
                             <div class="font-bold text-xl mb-2">
-                                <Link to='/produk/detailproduksi'>Anandi Bag</Link>
+                                <Link to='/produk/detailproduksi'>{item.name}</Link>
                             </div>
                         </div>
                     </div>
