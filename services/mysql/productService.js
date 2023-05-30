@@ -8,9 +8,9 @@ const {
 const productService = {
   getAllProducts: async (id_owner) => {
     const products = await Product.findAll({
-      where: {
-        id_owner,
-      },
+      // where: {
+      //   id_owner,
+      // },
       include: [
         {
           model: Material,

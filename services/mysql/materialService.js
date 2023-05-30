@@ -3,9 +3,9 @@ const { Material } = require("../../models");
 const materialService = {
   getAllMaterial: async (id_owner) => {
     const materials = await Material.findAll({
-      where: {
-        id_owner,
-      },
+      // where: {
+      //   id_owner,
+      // },
     });
     return materials;
   },
