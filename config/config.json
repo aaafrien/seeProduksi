@@ -7,14 +7,14 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "seeproduksi",
+    "username": "root",
     "password": null,
     "database": "seeproduksi",
     "host": "34.123.221.5",
     "dialect": "mysql"
   },
   "production": {
-    "username": "seeproduksi",
+    "username": "root",
     "password": null,
     "database": "seeproduksi",
     "host": "34.123.221.5",

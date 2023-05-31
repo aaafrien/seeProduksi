@@ -18,6 +18,8 @@ function createModelRole(Sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false,
           },
+    },{
+       tableName:'roles'
     });
     return Role;
 }
