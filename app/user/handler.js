@@ -3,6 +3,19 @@ const userService = require("../../services/mysql/userService");
 const generateAccessToken = require("../../utils/tokenManager");
 
 module.exports = {
+  handlerGetAllUser: async (req, res, next) =>{
+    try {
+      const users = await userService.getAllUser()
+
+      res.status(201).json({
+        status: "Success",
+        message: "Successfully get All User",
+        data: users,
+      });
+    } catch (error) {
+      next(error)
+    }
+  },
   handlerRegisterOwner: async (req, res, next) => {
     try {
       const { email, fullName, phoneNumber, password } = req.body;

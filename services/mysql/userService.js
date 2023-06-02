@@ -1,6 +1,10 @@
 const { User, Role } = require("../../models");
 
 const userService = { 
+    getAllUser: async () =>{
+        const users = await User.findAll()
+        return users
+    },
     createOwner: async (user) => {
         const newUser = await User.create(user);
         return {
