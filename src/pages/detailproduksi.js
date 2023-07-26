@@ -53,61 +53,6 @@ const detailproduksi = () => {
                     2
                   </td>
                 </tr>
-                <tr className="text-black border-b">
-                  <th scope="row" className="py-3 px-6 font-medium text-black whitespace-nowrap">
-                    Kulit
-                  </th>
-                  <td className="py-3 px-6">
-                    2
-                  </td>
-                  <td className="py-3">
-                    2
-                  </td>
-                </tr>
-                <tr className="text-black border-b">
-                  <th scope="row" className="py-3 px-6 font-medium text-black whitespace-nowrap">
-                    Kulit
-                  </th>
-                  <td className="py-3 px-6">
-                    2
-                  </td>
-                  <td className="py-3">
-                    2
-                  </td>
-                </tr>
-                <tr className="text-black border-b">
-                  <th scope="row" className="py-3 px-6 font-medium text-black whitespace-nowrap">
-                    Kulit
-                  </th>
-                  <td className="py-3 px-6">
-                    2
-                  </td>
-                  <td className="py-3">
-                    2
-                  </td>
-                </tr>
-                <tr className="text-black border-b">
-                  <th scope="row" className="py-3 px-6 font-medium text-black whitespace-nowrap">
-                    Kulit
-                  </th>
-                  <td className="py-3 px-6">
-                    2
-                  </td>
-                  <td className="py-3">
-                    2
-                  </td>
-                </tr>
-                <tr className="text-black border-b">
-                  <th scope="row" className="py-3 px-6 font-medium text-black whitespace-nowrap">
-                    Kulit
-                  </th>
-                  <td className="py-3 px-6">
-                    2
-                  </td>
-                  <td className="py-3">
-                    2
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

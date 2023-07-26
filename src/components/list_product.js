@@ -1,20 +1,37 @@
 import { Link } from 'react-router-dom'
 
-const ListProduct = ({produk}) => {
-    
+const ListProduct = ({ produk }) => {
+
     return (
         <>
-            <div className="pt-16 pl-8 flex flex-row flex-wrap justify-between w-full overflow-auto gap-y-10">
-                {Array.isArray(produk) && produk.length > 0 && produk.map((item, index) => (
-                    <div class="w-80 h-56 rounded-lg overflow-hidden shadow-xl p-3" key={index}>
-                        <div className="rounded bg-rose-900 h-36"></div>
-                        <div class="py-5">
-                            <div class="font-bold text-xl mb-2">
-                                <Link to='/produk/detailproduksi'>{item.name}</Link>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <div className="overflow-x-auto relative w-full rounded-lg border border-rose-900">
+                <table className="w-full text-left">
+                    <thead className="text-white bg-rose-900 h-16">
+                        <tr>
+                            <th scope="col" className="py-3 px-6">
+                                Produk
+                            </th>
+                            <th scope="col" className="py-3 px-6">
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {Array.isArray(produk) && produk.length > 0 && produk.map((item, index) => (
+                            <tr className="text-black border-b" key={index}>
+                                <th scope="row" className="py-5 px-6  font-medium text-black whitespace-nowrap">
+                                    {item.name}
+                                </th>
+                                <td className="px-6">
+                                    <Link to="/produk/detailproduksi" className="w-fit p-2 font-normal bg-rose-900 text-white rounded-lg border hover:bg-transparent hover:border-rose-900 hover:text-rose-900">
+                                        Produksi
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
                 {Array.isArray(produk) && produk.length === 0 && (
                     <div>
                         Tidak ada data

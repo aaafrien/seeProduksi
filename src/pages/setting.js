@@ -59,7 +59,7 @@ const Setting = () => {
                                 Detail Akun
                             </div>
                             <div className="flex flex-row gap-2">
-                                <div className="w-32 h-32 bg-rose-900 rounded-full">
+                                <div className="w-32 h-32 bg-rose-900 rounded-full content-center">
                                     <img src="" alt="profil"></img>
                                 </div>
                                 <button class="h-10 flex items-center justify-center p-2 bg-rose-900 text-white rounded-lg border hover:bg-transparent hover:border-rose-900 hover:text-rose-900">

@@ -176,33 +176,7 @@ const InputProduk = () => {
                                                             Tas Pria
                                                         </Link>
                                                     )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <Link
-                                                            onClick={() => handleSelect('Dompet')}
-                                                            className={classNames(
-                                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            )}
-                                                        >
-                                                            Dompet
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <Link
-                                                            onClick={() => handleSelect('Pouch')}
-                                                            className={classNames(
-                                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                'block px-4 py-2 text-sm'
-                                                            )}
-                                                        >
-                                                            Pouch
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
+                                                </Menu.Item>                                                
                                             </div>
                                         </Menu.Items>
                                     </Transition>

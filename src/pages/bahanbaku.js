@@ -86,7 +86,7 @@ const BahanBaku = () => {
                                             History
                                         </th>
                                         <th scope="col" className="py-3">
-
+                                            Aksi
                                         </th>
                                     </tr>
                                 </thead>

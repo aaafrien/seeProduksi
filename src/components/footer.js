@@ -9,9 +9,9 @@ const footer = () => {
     return (
         <>
             <div className="flex flex-row p-7 bg-rose-900 sm:p-16 text-white gap-16">
-                <div className="flex flex-col gap-4 text-xl">
+                <div className="flex flex-col gap-4 text-white">
                     <img src={logo} alt="logo" width="200" height="200" />
-                    <p>Kelola produksimu dengan kami!</p>
+                    <p>Manage your company now with us!</p>
                 </div>
                 <div className="flex flex-row gap-16">
                     <div className="text-white">

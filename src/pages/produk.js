@@ -48,21 +48,6 @@ const Produk = () => {
                                         className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800 cursor-pointer">
                                         <span className="ml-3">Tas Pria</span>
                                     </li>
-                                    <li
-                                        onClick={() => setCategory('Pouch')}
-                                        className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800 cursor-pointer">
-                                        <span className="ml-3">Pouch</span>
-                                    </li>
-                                    <li
-                                        onClick={() => setCategory('Dompet')}
-                                        className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800 cursor-pointer">
-                                        <span className="ml-3">Dompet</span>
-                                    </li>
-                                    <li
-                                        onClick={() => setCategory('Key Holder')}
-                                        className="h-12 flex items-center p-2 rounded-lg text-white hover:bg-rose-800 cursor-pointer">
-                                        <span className="ml-3">Key Holder</span>
-                                    </li>
                                 </ul>
                             </ul>
                         </div>
