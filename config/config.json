@@ -3,21 +3,21 @@
     "username": "root",
     "password": null,
     "database": "seeproduksi",
-    "host": "34.123.221.5",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "seeproduksi",
-    "host": "34.123.221.5",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "seeproduksi",
-    "host": "34.123.221.5",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }
